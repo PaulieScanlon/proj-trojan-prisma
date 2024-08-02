@@ -9,6 +9,7 @@ on:
 env:
   PROD_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }} # Production or primary database
   PG_VERSION: '16'
+  NODE_VERSION: '20.x'
 
 jobs:
   pr-merged:
@@ -16,5 +17,17 @@ jobs:
     if: github.event.pull_request.merged == true # Ensure the PR was merged
 
     steps:
-      - name: Test
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Prisma Migrate
         run: |
+          npx prisma migrate deploy
