@@ -18,4 +18,5 @@ model users {
   email      String  @unique @db.VarChar(255)
   country    String  @db.VarChar(255)
   flag       String? @db.VarChar(255)
+  test4      String? @db.VarChar(255)
 }
